@@ -1,0 +1,1720 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KineRehab | Kinesiología & Fisiatría - Resistencia, Chaco</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue:       #2A7DB8;
+    --blue2:      #1B5F8E;
+    --blue3:      #0D3F66;
+    --blue-light: #D6EAF8;
+    --blue-pale:  #EAF4FB;
+    --teal:       #2A9D8F;
+    --teal2:      #1E7568;
+    --bg:         #EAF3F9;        /* fondo celeste tenue principal */
+    --bg2:        #F0F7FC;        /* secciones alternas */
+    --bg3:        #DDE9F3;        /* strip stats */
+    --card:       #FFFFFF;
+    --text:       #0D2840;
+    --text2:      #3A5A70;
+    --text3:      #7A9AAF;
+    --border:     rgba(42,125,184,0.13);
+    --shadow:     rgba(13,40,64,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ===== BG CANVAS ===== */
+  #bgCanvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.25;
+  }
+
+  /* ===== NAV ===== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 0 60px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(234,243,249,0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    transition: all 0.3s;
+  }
+
+  nav.scrolled { box-shadow: 0 4px 30px rgba(42,125,184,0.1); }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+
+  .logo-mark {
+    width: 44px; height: 44px;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .logo-mark svg { width: 100%; height: 100%; }
+
+  .logo-text-wrap .name {
+    font-family: 'Fraunces', serif;
+    font-size: 21px;
+    font-weight: 300;
+    color: var(--text);
+    letter-spacing: 0.3px;
+    line-height: 1.1;
+  }
+
+  .logo-text-wrap .name strong { font-weight: 700; color: var(--blue); }
+  .logo-text-wrap .sub {
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--text3);
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: var(--text2);
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--blue); }
+
+  .nav-pill {
+    background: var(--blue) !important;
+    color: white !important;
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-size: 13px !important;
+    transition: all 0.3s !important;
+    box-shadow: 0 4px 15px rgba(42,125,184,0.3);
+  }
+
+  .nav-pill:hover {
+    background: var(--blue2) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(42,125,184,0.4) !important;
+  }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+  }
+
+  .hamburger span {
+    width: 22px; height: 2px;
+    background: var(--blue);
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 100px 60px 60px;
+    gap: 60px;
+  }
+
+  .hero-left { animation: heroLeft 0.8s ease both; }
+  @keyframes heroLeft {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--blue-light);
+    color: var(--blue);
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--blue);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.6); }
+  }
+
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(42px, 5.5vw, 70px);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+
+  .hero h1 span { color: var(--blue); font-style: italic; }
+
+  .hero p {
+    font-size: 17px;
+    color: var(--text2);
+    line-height: 1.75;
+    font-weight: 300;
+    margin-bottom: 40px;
+    max-width: 480px;
+  }
+
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+
+  .btn-main {
+    background: var(--blue);
+    color: white;
+    padding: 16px 36px;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s;
+    box-shadow: 0 6px 20px rgba(42,125,184,0.35);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-main::after {
+    content: '';
+    position: absolute;
+    top: -50%; left: -60%;
+    width: 40%; height: 200%;
+    background: rgba(255,255,255,0.2);
+    transform: skewX(-20deg);
+    transition: left 0.5s;
+  }
+
+  .btn-main:hover::after { left: 130%; }
+  .btn-main:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(42,125,184,0.5); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--blue);
+    padding: 16px 36px;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s;
+    border: 2px solid var(--border);
+  }
+
+  .btn-ghost:hover { border-color: var(--blue); background: var(--blue-pale); transform: translateY(-3px); }
+
+  /* Hero right - imagen real + cards */
+  .hero-right {
+    position: relative;
+    height: 520px;
+    animation: heroRight 0.8s ease 0.2s both;
+  }
+
+  @keyframes heroRight {
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .hero-img-main {
+    position: absolute;
+    top: 0; left: 5%;
+    width: 88%; height: 78%;
+    border-radius: 28px;
+    object-fit: cover;
+    box-shadow: 0 20px 60px rgba(13,40,64,0.2);
+    border: 4px solid white;
+  }
+
+  .hero-badge-float {
+    position: absolute;
+    bottom: 5%;
+    right: -10px;
+    background: white;
+    border-radius: 20px;
+    padding: 16px 22px;
+    box-shadow: 0 10px 30px rgba(13,40,64,0.12);
+    border: 1px solid var(--border);
+    text-align: center;
+    animation: floatBadge 3s ease-in-out infinite;
+    z-index: 2;
+  }
+
+  @keyframes floatBadge {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .hero-badge-float .num {
+    font-family: 'Fraunces', serif;
+    font-size: 34px;
+    color: var(--blue);
+    font-weight: 700;
+    display: block;
+    line-height: 1;
+  }
+
+  .hero-badge-float .lbl {
+    font-size: 11px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .hero-badge-float2 {
+    position: absolute;
+    top: 55%;
+    left: -10px;
+    background: var(--blue);
+    border-radius: 16px;
+    padding: 14px 18px;
+    box-shadow: 0 8px 24px rgba(42,125,184,0.35);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: floatBadge2 3.5s ease-in-out infinite;
+    z-index: 2;
+  }
+
+  @keyframes floatBadge2 {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+  }
+
+  .hero-badge-float2 .b2-ico { font-size: 20px; }
+  .hero-badge-float2 .b2-txt strong { font-size: 13px; color: white; display: block; }
+  .hero-badge-float2 .b2-txt small { font-size: 10px; color: rgba(255,255,255,0.7); }
+
+  /* ===== SERVICES ===== */
+  .services {
+    position: relative;
+    z-index: 1;
+    padding: 100px 60px;
+    background: var(--bg2);
+  }
+
+  .section-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(34px, 4vw, 52px);
+    font-weight: 300;
+    color: var(--text);
+    margin-bottom: 60px;
+    line-height: 1.2;
+  }
+
+  .section-title em { font-style: italic; color: var(--blue); }
+
+  /* IMAGES GRID - galeria real */
+  .gallery-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 60px;
+  }
+
+  .gallery-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px var(--shadow);
+    transition: all 0.4s;
+    border: 3px solid white;
+  }
+
+  .gallery-img:hover { transform: scale(1.03); box-shadow: 0 16px 40px rgba(42,125,184,0.2); }
+
+  .gallery-img.tall {
+    grid-row: span 2;
+    height: 100%;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .svc {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 36px 28px;
+    border: 1px solid var(--border);
+    transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .svc::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 0;
+    background: linear-gradient(180deg, var(--blue-pale), var(--blue-light));
+    transition: height 0.4s;
+    z-index: 0;
+  }
+
+  .svc:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(42,125,184,0.13); border-color: var(--blue); }
+  .svc:hover::before { height: 100%; }
+  .svc > * { position: relative; z-index: 1; }
+
+  .svc-num {
+    font-family: 'Fraunces', serif;
+    font-size: 48px;
+    font-weight: 300;
+    color: rgba(42,125,184,0.12);
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+
+  .svc h3 { font-size: 17px; font-weight: 600; color: var(--text); margin-bottom: 10px; }
+  .svc p { font-size: 14px; color: var(--text2); line-height: 1.65; }
+
+  /* ===== TEAM ===== */
+  .team {
+    position: relative;
+    z-index: 1;
+    padding: 100px 60px;
+    background: var(--bg);
+  }
+
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .team-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    overflow: hidden;
+    transition: all 0.4s;
+    box-shadow: 0 4px 20px var(--shadow);
+  }
+
+  .team-card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(42,125,184,0.15); }
+
+  .team-top {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+  }
+
+  .team-top img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: top;
+    transition: transform 0.5s;
+  }
+
+  .team-card:hover .team-top img { transform: scale(1.05); }
+
+  .team-top-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 40%, rgba(13,40,64,0.7) 100%);
+  }
+
+  .team-top-info {
+    position: absolute;
+    bottom: 16px; left: 20px;
+    color: white;
+  }
+
+  .team-top-info h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 300;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+  }
+
+  .team-top-info .mp-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(8px);
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    margin-top: 4px;
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+
+  .team-bottom { padding: 24px; }
+
+  .team-specs { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+
+  .spec {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--text2);
+  }
+
+  .spec-dot {
+    width: 6px; height: 6px;
+    background: var(--blue);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .team-contact { display: flex; gap: 8px; }
+
+  .t-btn {
+    flex: 1;
+    padding: 11px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s;
+    display: block;
+  }
+
+  .t-btn.call { background: var(--blue-light); color: var(--blue); }
+  .t-btn.call:hover { background: var(--blue); color: white; }
+  .t-btn.wa { background: #E8F8EE; color: #25D366; }
+  .t-btn.wa:hover { background: #25D366; color: white; }
+
+  /* ===== CONTACT ===== */
+  .contact {
+    position: relative;
+    z-index: 1;
+    padding: 100px 60px;
+    background: var(--text);
+  }
+
+  .contact-inner {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .contact h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 46px;
+    font-weight: 300;
+    color: white;
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+
+  .contact h2 em { color: #7BBDD4; font-style: italic; }
+  .contact .sub { color: rgba(255,255,255,0.5); font-size: 15px; margin-bottom: 40px; line-height: 1.7; }
+
+  .contact-cards { display: flex; flex-direction: column; gap: 12px; }
+
+  .c-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 22px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    text-decoration: none;
+    color: white;
+    transition: all 0.3s;
+  }
+
+  .c-card:hover { background: rgba(42,125,184,0.2); border-color: rgba(42,125,184,0.4); transform: translateX(6px); }
+
+  .c-icon-wrap {
+    width: 44px; height: 44px;
+    background: var(--blue);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    transition: all 0.3s;
+  }
+
+  .c-card:hover .c-icon-wrap { background: var(--teal); }
+
+  .c-info strong { display: block; font-size: 15px; font-weight: 600; }
+  .c-info small { font-size: 12px; color: rgba(255,255,255,0.5); }
+
+  .contact-right {
+    background: white;
+    border-radius: 28px;
+    padding: 48px;
+  }
+
+  .contact-right h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .contact-right p { font-size: 14px; color: var(--text3); margin-bottom: 28px; }
+
+  .form-row { display: flex; flex-direction: column; gap: 14px; }
+
+  .inp {
+    width: 100%;
+    padding: 14px 18px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--bg);
+    outline: none;
+    transition: border 0.3s;
+  }
+
+  .inp:focus { border-color: var(--blue); background: white; }
+  .inp::placeholder { color: var(--text3); }
+
+  .submit-btn {
+    width: 100%;
+    padding: 16px;
+    background: var(--blue);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 6px 20px rgba(42,125,184,0.3);
+  }
+
+  .submit-btn:hover { background: var(--blue2); transform: translateY(-2px); }
+
+  /* ===== FOOTER ===== */
+  footer {
+    position: relative;
+    z-index: 1;
+    background: #071828;
+    padding: 40px 60px;
+  }
+
+  .footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 32px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    margin-bottom: 24px;
+  }
+
+  .footer-brand {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    color: #7BBDD4;
+    margin-bottom: 8px;
+  }
+
+  .footer-brand-sub {
+    font-size: 12px;
+    color: rgba(255,255,255,0.35);
+    max-width: 260px;
+    line-height: 1.6;
+  }
+
+  .footer-col h4 {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 14px;
+  }
+
+  .footer-col a, .footer-col p {
+    display: block;
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    margin-bottom: 8px;
+    transition: color 0.2s;
+  }
+
+  .footer-col a:hover { color: #7BBDD4; }
+
+  /* INSTAGRAM DESTACADO en footer */
+  .insta-footer-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    color: white;
+    padding: 14px 22px;
+    border-radius: 14px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s;
+    box-shadow: 0 6px 20px rgba(220,39,67,0.35);
+    margin-top: 8px;
+  }
+
+  .insta-footer-btn:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 10px 28px rgba(220,39,67,0.5); }
+
+  .insta-footer-btn svg { width: 22px; height: 22px; fill: white; flex-shrink: 0; }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .footer-copy { font-size: 12px; color: rgba(255,255,255,0.25); }
+
+  .footer-socials { display: flex; gap: 10px; }
+
+  .fsoc {
+    width: 38px; height: 38px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    transition: all 0.3s;
+    font-size: 15px;
+  }
+
+  .fsoc:hover { transform: translateY(-3px); }
+  .fsoc.ig:hover { background: linear-gradient(135deg, #f09433, #dc2743, #bc1888); border-color: transparent; color: white; }
+  .fsoc.wa:hover { background: #25D366; border-color: transparent; color: white; }
+
+  /* ===== WHATSAPP ===== */
+  .wa-float {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+  }
+
+  .wa-label {
+    background: white;
+    color: var(--text);
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    white-space: nowrap;
+    transform: translateX(10px);
+    opacity: 0;
+    transition: all 0.3s;
+    pointer-events: none;
+  }
+
+  .wa-float:hover .wa-label { opacity: 1; transform: translateX(0); }
+
+  .wa-circle {
+    width: 60px; height: 60px;
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 24px rgba(37,211,102,0.45);
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    animation: waPulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes waPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+  }
+
+  .wa-circle:hover { transform: scale(1.15) !important; animation: none; box-shadow: 0 10px 32px rgba(37,211,102,0.6); }
+  .wa-circle svg { width: 28px; height: 28px; fill: white; }
+
+  /* ===== CHATBOT ===== */
+  .cb-float {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    z-index: 9998;
+  }
+
+  .cb-btn {
+    width: 60px; height: 60px;
+    background: var(--blue);
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 22px rgba(42,125,184,0.4);
+    transition: all 0.3s;
+    font-size: 22px;
+    color: white;
+  }
+
+  .cb-btn:hover { background: var(--blue2); transform: scale(1.08); }
+
+  .cb-window {
+    display: none;
+    position: absolute;
+    bottom: 74px; left: 0;
+    width: 340px;
+    background: var(--card);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(13,40,64,0.18);
+    border: 1px solid var(--border);
+    flex-direction: column;
+    max-height: 520px;
+  }
+
+  .cb-window.open { display: flex; animation: cbSlideUp 0.3s ease; }
+
+  @keyframes cbSlideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .cb-head {
+    background: linear-gradient(135deg, var(--blue), var(--blue2));
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .cb-head-icon {
+    width: 42px; height: 42px;
+    background: rgba(255,255,255,0.18);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .cb-head strong { color: white; font-size: 15px; display: block; font-family: 'Fraunces', serif; font-weight: 300; }
+  .cb-head small { font-size: 11px; color: rgba(255,255,255,0.75); }
+
+  .cb-head-status {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.75);
+  }
+
+  .cb-head-status::before {
+    content: '';
+    width: 7px; height: 7px;
+    background: #5AE87A;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  .cb-progress {
+    background: rgba(255,255,255,0.1);
+    height: 3px;
+  }
+
+  .cb-progress-bar {
+    height: 100%;
+    background: rgba(255,255,255,0.5);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  .cb-msgs {
+    flex: 1;
+    padding: 18px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 300px;
+    background: var(--bg);
+  }
+
+  .cmsg {
+    max-width: 88%;
+    padding: 11px 15px;
+    border-radius: 16px;
+    font-size: 13.5px;
+    line-height: 1.5;
+    animation: cmsgIn 0.3s ease;
+  }
+
+  @keyframes cmsgIn {
+    from { opacity: 0; transform: translateY(7px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .cmsg.bot {
+    background: white;
+    color: var(--text);
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 4px var(--shadow);
+  }
+
+  .cmsg.user {
+    background: var(--blue);
+    color: white;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+  }
+
+  .cb-opts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    padding: 8px 18px 12px;
+    background: var(--bg);
+  }
+
+  .cb-opt {
+    background: white;
+    border: 1.5px solid var(--border);
+    color: var(--blue);
+    padding: 7px 14px;
+    border-radius: 20px;
+    font-size: 12.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  .cb-opt:hover { background: var(--blue); color: white; border-color: var(--blue); }
+
+  .cb-inp-area {
+    padding: 14px 18px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 8px;
+    background: white;
+  }
+
+  .cb-inp {
+    flex: 1;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    color: var(--text);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    outline: none;
+    transition: border 0.2s;
+  }
+
+  .cb-inp:focus { border-color: var(--blue); }
+  .cb-inp::placeholder { color: var(--text3); }
+
+  .cb-send {
+    width: 38px; height: 38px;
+    background: var(--blue);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    font-size: 15px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cb-send:hover { background: var(--blue2); transform: scale(1.05); }
+
+  /* Typing indicator */
+  .typing {
+    display: flex;
+    gap: 4px;
+    padding: 12px 16px;
+    background: white;
+    border-radius: 16px;
+    border-bottom-left-radius: 4px;
+    align-self: flex-start;
+    border: 1px solid var(--border);
+    width: fit-content;
+  }
+
+  .typing span {
+    width: 7px; height: 7px;
+    background: var(--text3);
+    border-radius: 50%;
+    animation: typingBounce 1s ease infinite;
+  }
+
+  .typing span:nth-child(2) { animation-delay: 0.15s; }
+  .typing span:nth-child(3) { animation-delay: 0.3s; }
+
+  @keyframes typingBounce {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-5px); }
+  }
+
+  /* Mobile nav */
+  .mob-nav {
+    display: none;
+    position: fixed;
+    top: 72px; left: 0; right: 0;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    flex-direction: column;
+    gap: 4px;
+    z-index: 99;
+    box-shadow: 0 8px 24px rgba(42,125,184,0.08);
+  }
+
+  .mob-nav.open { display: flex; animation: mnSlide 0.3s ease; }
+  @keyframes mnSlide {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .mob-nav a {
+    padding: 12px 8px;
+    text-decoration: none;
+    color: var(--text2);
+    font-size: 15px;
+    font-weight: 500;
+    border-bottom: 1px solid var(--border);
+    display: block;
+    transition: color 0.2s;
+  }
+
+  .mob-nav a:hover { color: var(--blue); }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 900px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .hero { grid-template-columns: 1fr; padding: 90px 20px 60px; }
+    .hero-right { height: 280px; }
+    .hero-badge-float { right: 10px; bottom: 2%; }
+    .hero-badge-float2 { display: none; }
+    .hero-img-main { height: 100%; }
+    .services { padding: 70px 20px; }
+    .gallery-strip { grid-template-columns: repeat(2, 1fr); }
+    .services-grid { grid-template-columns: 1fr; gap: 14px; }
+    .team { padding: 70px 20px; }
+    .team-grid { grid-template-columns: 1fr; }
+    .contact { padding: 70px 20px; }
+    .contact-inner { grid-template-columns: 1fr; gap: 40px; }
+    footer { padding: 30px 20px; }
+    .footer-top { flex-direction: column; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+    .cb-window { width: 300px; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="bgCanvas"></canvas>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="#" class="logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="44" height="44" rx="14" fill="#D6EAF8"/>
+        <rect x="20" y="10" width="4" height="24" rx="2" fill="#2A7DB8"/>
+        <rect x="10" y="20" width="24" height="4" rx="2" fill="#2A7DB8"/>
+        <circle cx="22" cy="22" r="5" fill="none" stroke="#2A7DB8" stroke-width="1.5" opacity="0.35"/>
+      </svg>
+    </div>
+    <div class="logo-text-wrap">
+      <div class="name">Kine<strong>Rehab</strong></div>
+      <div class="sub">Kinesiología · Fisiatría · Chaco</div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#equipo">Profesionales</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+    <li>
+      <a href="https://www.instagram.com/consultoriokinerehabilitacion" target="_blank" rel="noopener" title="Instagram">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#2A7DB8" stroke-width="2" style="display:block">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+        </svg>
+      </a>
+    </li>
+    <li><a href="#contacto" class="nav-pill">Pedir Turno</a></li>
+  </ul>
+  <div class="hamburger" onclick="toggleMobNav()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="mob-nav" id="mobNav">
+  <a href="#servicios" onclick="closeMobNav()">Servicios</a>
+  <a href="#equipo" onclick="closeMobNav()">Profesionales</a>
+  <a href="#contacto" onclick="closeMobNav()">Contacto</a>
+  <a href="https://www.instagram.com/consultoriokinerehabilitacion" target="_blank">📷 Instagram</a>
+  <a href="#contacto" onclick="closeMobNav()" style="color:#2A7DB8">→ Pedir Turno</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-left">
+    <div class="hero-tag">Centro Kinesiológico · Resistencia, Chaco</div>
+    <h1>Tu recuperación<br>en <span>manos expertas</span></h1>
+    <p>Kinesiología y fisiatría con atención personalizada. Dos profesionales especializadas, comprometidas con tu bienestar y rehabilitación.</p>
+    <div class="hero-actions">
+      <a href="#contacto" class="btn-main">Agendá tu Turno</a>
+      <a href="#servicios" class="btn-ghost">Ver Tratamientos</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <!-- Imagen real profesional de kinesiología -->
+    <img 
+      class="hero-img-main"
+      src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&auto=format&fit=crop&q=80"
+      alt="Tratamiento kinesiológico profesional"
+      loading="eager"
+    >
+    <div class="hero-badge-float">
+      <span class="num">+500</span>
+      <span class="lbl">Pacientes<br>atendidos</span>
+    </div>
+    <div class="hero-badge-float2">
+      <div class="b2-ico">✅</div>
+      <div class="b2-txt">
+        <strong>Profesionales Certificadas</strong>
+        <small>MP 747 · MP 12998</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="servicios">
+  <!-- Galería de imágenes reales -->
+  <div class="section-label">Nuestros Tratamientos</div>
+  <h2 class="section-title">Atención <em>especializada</em><br>para tu bienestar</h2>
+
+  <div class="gallery-strip">
+    <img 
+      class="gallery-img"
+      src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&auto=format&fit=crop&q=80"
+      alt="Rehabilitación física profesional"
+    >
+    <img 
+      class="gallery-img"
+      src="https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=600&auto=format&fit=crop&q=80"
+      alt="Fisioterapia y masajes terapéuticos"
+    >
+    <img 
+      class="gallery-img"
+      src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&auto=format&fit=crop&q=80"
+      alt="Ejercicios de rehabilitación"
+    >
+  </div>
+
+  <div class="services-grid">
+    <div class="svc"><div class="svc-num">01</div><h3>Kinesiología Traumatológica</h3><p>Rehabilitación post-quirúrgica, fracturas, esguinces y lesiones musculo-esqueléticas con técnicas avanzadas.</p></div>
+    <div class="svc"><div class="svc-num">02</div><h3>Rehabilitación Neurológica</h3><p>Tratamiento para ACV, Parkinson, esclerosis múltiple y otras patologías del sistema nervioso central.</p></div>
+    <div class="svc"><div class="svc-num">03</div><h3>Kinesiología Respiratoria</h3><p>Fisioterapia respiratoria y rehabilitación pulmonar para adultos y niños con patologías broncopulmonares.</p></div>
+    <div class="svc"><div class="svc-num">04</div><h3>Electroterapia</h3><p>TENS, iontoforesis, ultrasonido terapéutico y corrientes analgésicas para el manejo efectivo del dolor.</p></div>
+    <div class="svc"><div class="svc-num">05</div><h3>Pilates Terapéutico</h3><p>Control motor, fortalecimiento y flexibilidad adaptados a cada patología y condición física del paciente.</p></div>
+    <div class="svc"><div class="svc-num">06</div><h3>Fisiatría</h3><p>Evaluación funcional completa, prescripción de ortesis, ejercicio terapéutico y medicina física rehabilitatoria.</p></div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="team" id="equipo">
+  <div style="text-align:center; margin-bottom: 60px;">
+    <div class="section-label">Nuestro Equipo</div>
+    <h2 class="section-title" style="margin-bottom:0">Las <em>profesionales</em></h2>
+  </div>
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-top">
+        <img 
+          src="https://images.unsplash.com/photo-1551190822-a9333d879b1f?w=600&auto=format&fit=crop&q=80"
+          alt="Kinesióloga profesional"
+        >
+        <div class="team-top-overlay"></div>
+        <div class="team-top-info">
+          <h3>Lic. Romina Benítez</h3>
+          <span class="mp-badge">MP 747</span>
+        </div>
+      </div>
+      <div class="team-bottom">
+        <div class="team-specs">
+          <div class="spec"><span class="spec-dot"></span>Kinesióloga</div>
+          <div class="spec"><span class="spec-dot"></span>Especialista en Fisiatría</div>
+          <div class="spec"><span class="spec-dot"></span>Matrícula Provincial N° 747</div>
+        </div>
+        <div class="team-contact">
+          <a href="tel:3624543425" class="t-btn call">📞 362 454-3425</a>
+          <a href="https://wa.me/543624543425?text=Hola%20Romina!%20Quisiera%20pedir%20un%20turno" target="_blank" class="t-btn wa">💬 WA</a>
+        </div>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-top">
+        <img 
+          src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=600&auto=format&fit=crop&q=80"
+          alt="Kinesióloga especialista en fisiatría"
+        >
+        <div class="team-top-overlay"></div>
+        <div class="team-top-info">
+          <h3>Lic. Tamy Feldman</h3>
+          <span class="mp-badge">MP 12998</span>
+        </div>
+      </div>
+      <div class="team-bottom">
+        <div class="team-specs">
+          <div class="spec"><span class="spec-dot"></span>Kinesióloga</div>
+          <div class="spec"><span class="spec-dot"></span>Especialista en Fisiatría</div>
+          <div class="spec"><span class="spec-dot"></span>Matrícula Provincial N° 12998</div>
+        </div>
+        <div class="team-contact">
+          <a href="tel:3624123456" class="t-btn call">📞 362 412-3456</a>
+          <a href="https://wa.me/543624123456?text=Hola%20Tamy!%20Quisiera%20pedir%20un%20turno" target="_blank" class="t-btn wa">💬 WA</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contacto">
+  <div class="contact-inner">
+    <div>
+      <h2>Tomá el<br>primer paso <em>hoy</em></h2>
+      <p class="sub">Comunicate con nosotras para coordinar tu consulta. Respondemos a la brevedad.</p>
+      <div class="contact-cards">
+        <a href="tel:3624543425" class="c-card">
+          <div class="c-icon-wrap">📞</div>
+          <div class="c-info"><strong>362 454-3425</strong><small>Romina Benítez · MP 747</small></div>
+        </a>
+        <a href="tel:3624123456" class="c-card">
+          <div class="c-icon-wrap">📞</div>
+          <div class="c-info"><strong>362 412-3456</strong><small>Tamy Feldman · MP 12998</small></div>
+        </a>
+        <a href="https://wa.me/543624543425" target="_blank" class="c-card">
+          <div class="c-icon-wrap">💬</div>
+          <div class="c-info"><strong>WhatsApp</strong><small>Agendá tu turno online</small></div>
+        </a>
+        <a href="https://www.instagram.com/consultoriokinerehabilitacion" target="_blank" class="c-card">
+          <div class="c-icon-wrap" style="background: linear-gradient(135deg,#f09433,#dc2743,#bc1888)">📷</div>
+          <div class="c-info"><strong>@consultoriokinerehabilitacion</strong><small>Seguinos en Instagram</small></div>
+        </a>
+        <div class="c-card" style="cursor:default">
+          <div class="c-icon-wrap">📍</div>
+          <div class="c-info"><strong>Resistencia, Chaco</strong><small>Argentina</small></div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-right">
+      <h3>Escribinos</h3>
+      <p>Te respondemos a la brevedad para confirmar tu turno.</p>
+      <div class="form-row">
+        <input class="inp" type="text" placeholder="Tu nombre completo">
+        <input class="inp" type="tel" placeholder="Tu teléfono de contacto">
+        <select class="inp" style="cursor:pointer">
+          <option value="" disabled selected>¿Con quién querés atenderte?</option>
+          <option>Romina Benítez (MP 747)</option>
+          <option>Tamy Feldman (MP 12998)</option>
+          <option>Cualquiera disponible</option>
+        </select>
+        <textarea class="inp" rows="3" placeholder="¿Cuál es tu consulta o motivo de visita?" style="resize:vertical"></textarea>
+        <button class="submit-btn" onclick="submitForm()">Enviar por WhatsApp →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand">KineRehab</div>
+      <div class="footer-brand-sub">Centro de Kinesiología y Fisiatría en Resistencia, Chaco. Atención profesional y personalizada.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Contacto</h4>
+      <a href="tel:3624543425">📞 362 454-3425 · Romina</a>
+      <a href="tel:3624123456">📞 362 412-3456 · Tamy</a>
+      <a href="https://wa.me/543624543425" target="_blank">💬 WhatsApp turnos</a>
+      <p>📍 Resistencia, Chaco</p>
+    </div>
+    <div class="footer-col">
+      <h4>Seguinos</h4>
+      <!-- INSTAGRAM DESTACADO -->
+      <a 
+        href="https://www.instagram.com/consultoriokinerehabilitacion" 
+        target="_blank" 
+        rel="noopener"
+        class="insta-footer-btn"
+      >
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+        </svg>
+        @consultoriokinerehabilitacion
+      </a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 KineRehab · Lic. Romina Benítez MP747 · Lic. Tamy Feldman MP12998 · Resistencia, Chaco</div>
+    <div class="footer-socials">
+      <a href="https://www.instagram.com/consultoriokinerehabilitacion" target="_blank" class="fsoc ig" title="Instagram">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+        </svg>
+      </a>
+      <a href="https://wa.me/543624543425" target="_blank" class="fsoc wa" title="WhatsApp">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<!-- WHATSAPP FLOTANTE -->
+<div class="wa-float">
+  <div class="wa-label">Agendar Turno 📅</div>
+  <a href="https://wa.me/543624543425?text=Hola!%20Quisiera%20agendar%20un%20turno" target="_blank" class="wa-circle">
+    <svg viewBox="0 0 24 24">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+  </a>
+</div>
+
+<!-- CHATBOT FLOTANTE -->
+<div class="cb-float">
+  <button class="cb-btn" id="cbBtn" onclick="toggleChat()">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </svg>
+  </button>
+  <div class="cb-window" id="cbWindow">
+    <div class="cb-head">
+      <div class="cb-head-icon">🏥</div>
+      <div>
+        <strong>KineRehab · Turnos</strong>
+        <small>Te ayudamos a agendar tu consulta</small>
+      </div>
+      <div class="cb-head-status">En línea</div>
+    </div>
+    <div class="cb-progress"><div class="cb-progress-bar" id="cbProgressBar"></div></div>
+    <div class="cb-msgs" id="cbMsgs"></div>
+    <div class="cb-opts" id="cbOpts"></div>
+    <div class="cb-inp-area">
+      <input type="text" class="cb-inp" id="cbInp" placeholder="Escribí tu respuesta..." onkeypress="if(event.key==='Enter')sendManual()">
+      <button class="cb-send" onclick="sendManual()">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===== BG CANVAS ===== */
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+let W, H, circles = [];
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+
+function initCircles() {
+  circles = [];
+  const n = Math.floor(W / 90);
+  for (let i = 0; i < n; i++) {
+    circles.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 80 + 20,
+      vx: (Math.random() - 0.5) * 0.25,
+      vy: (Math.random() - 0.5) * 0.25,
+      a: Math.random() * 0.12 + 0.02,
+      c: Math.random() > 0.5 ? '#2A7DB8' : '#2A9D8F'
+    });
+  }
+}
+
+function drawCanvas() {
+  ctx.clearRect(0, 0, W, H);
+  circles.forEach(c => {
+    ctx.beginPath();
+    ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+    ctx.fillStyle = c.c;
+    ctx.globalAlpha = c.a;
+    ctx.fill();
+    c.x += c.vx; c.y += c.vy;
+    if (c.x < -c.r) c.x = W + c.r;
+    if (c.x > W + c.r) c.x = -c.r;
+    if (c.y < -c.r) c.y = H + c.r;
+    if (c.y > H + c.r) c.y = -c.r;
+  });
+  ctx.globalAlpha = 1;
+  requestAnimationFrame(drawCanvas);
+}
+
+resize(); initCircles(); drawCanvas();
+window.addEventListener('resize', () => { resize(); initCircles(); });
+
+/* ===== NAV ===== */
+window.addEventListener('scroll', () => {
+  document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 40);
+});
+
+function toggleMobNav() { document.getElementById('mobNav').classList.toggle('open'); }
+function closeMobNav() { document.getElementById('mobNav').classList.remove('open'); }
+
+/* ===== INTERSECTION OBSERVER ===== */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'translateY(0)'; }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.svc, .team-card, .gallery-img').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(22px)';
+  el.style.transition = 'all 0.5s ease';
+  obs.observe(el);
+});
+
+/* ===== FORM ===== */
+function submitForm() {
+  window.open('https://wa.me/543624543425?text=Hola!%20Quisiera%20agendar%20una%20consulta', '_blank');
+}
+
+/* ===== CHATBOT COMPLETO ===== */
+let chatOpen = false;
+let step = 0;
+let chatData = {};
+
+// Flujo del chatbot
+const flow = [
+  {
+    // step 0 — bienvenida + profesional
+    msg: '¡Hola! 👋 Bienvenido/a a KineRehab. Estoy aquí para ayudarte a agendar tu turno.\n\n¿Con cuál de nuestras profesionales querés atenderte?',
+    opts: ['Romina Benítez', 'Tamy Feldman', 'Cualquiera disponible'],
+    key: 'profesional',
+    progress: 10
+  },
+  {
+    // step 1 — tipo de tratamiento
+    msg: '¡Excelente! ¿Para qué tipo de tratamiento o consulta necesitás el turno?',
+    opts: ['Kinesiología Traumatológica', 'Rehabilitación Neurológica', 'Kinesiología Respiratoria', 'Electroterapia / Dolor', 'Pilates Terapéutico', 'Fisiatría / Diagnóstico', 'No sé / Consulta general'],
+    key: 'tratamiento',
+    progress: 30
+  },
+  {
+    // step 2 — obra social
+    msg: '¿Contás con obra social o prepaga, o vas a abonar de forma particular?',
+    opts: ['Tengo obra social / prepaga', 'Soy paciente particular'],
+    key: 'cobertura',
+    progress: 55
+  },
+  {
+    // step 3 — cuál obra social (solo si tiene)
+    msg: null, // se genera dinámicamente según respuesta
+    opts: null,
+    key: 'obraSocial',
+    progress: 70
+  },
+  {
+    // step 4 — día preferido
+    msg: '¿Qué día preferís para tu turno?',
+    opts: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Cualquier día disponible'],
+    key: 'dia',
+    progress: 82
+  },
+  {
+    // step 5 — horario
+    msg: '¿En qué horario te queda mejor?',
+    opts: ['Mañana (8 a 12 hs)', 'Tarde (15 a 19 hs)', 'Cualquier horario'],
+    key: 'horario',
+    progress: 95
+  }
+];
+
+function addMsg(text, type, delay = 0) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      const msgs = document.getElementById('cbMsgs');
+      const d = document.createElement('div');
+      d.className = `cmsg ${type}`;
+      d.style.whiteSpace = 'pre-line';
+      d.textContent = text;
+      msgs.appendChild(d);
+      msgs.scrollTop = msgs.scrollHeight;
+      resolve();
+    }, delay);
+  });
+}
+
+function showTyping(duration = 800) {
+  return new Promise(resolve => {
+    const msgs = document.getElementById('cbMsgs');
+    const t = document.createElement('div');
+    t.className = 'typing';
+    t.id = 'typingEl';
+    t.innerHTML = '<span></span><span></span><span></span>';
+    msgs.appendChild(t);
+    msgs.scrollTop = msgs.scrollHeight;
+    setTimeout(() => {
+      if (document.getElementById('typingEl')) {
+        document.getElementById('typingEl').remove();
+      }
+      resolve();
+    }, duration);
+  });
+}
+
+function showOpts(opts) {
+  const container = document.getElementById('cbOpts');
+  container.innerHTML = '';
+  opts.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'cb-opt';
+    btn.textContent = opt;
+    btn.onclick = () => handleOpt(opt);
+    container.appendChild(btn);
+  });
+}
+
+function setProgress(pct) {
+  document.getElementById('cbProgressBar').style.width = pct + '%';
+}
+
+async function handleOpt(val) {
+  document.getElementById('cbOpts').innerHTML = '';
+  await addMsg(val, 'user');
+
+  if (step === 0) {
+    chatData.profesional = val;
+    step = 1;
+    setProgress(flow[1].progress);
+    await showTyping(700);
+    await addMsg(flow[1].msg, 'bot');
+    showOpts(flow[1].opts);
+
+  } else if (step === 1) {
+    chatData.tratamiento = val;
+    step = 2;
+    setProgress(flow[2].progress);
+    await showTyping(700);
+    await addMsg(flow[2].msg, 'bot');
+    showOpts(flow[2].opts);
+
+  } else if (step === 2) {
+    chatData.cobertura = val;
+    step = 3;
+    setProgress(flow[3].progress);
+    await showTyping(700);
+
+    if (val.includes('obra social') || val.includes('prepaga')) {
+      await addMsg('¡Perfecto! ¿Cuál es tu obra social o prepaga?', 'bot');
+      showOpts(['OSECAC', 'IOSCOR', 'PAMI', 'Swiss Medical', 'Galeno', 'OSDE', 'Medicus', 'Sancor Salud', 'Otra / No sé el nombre']);
+    } else {
+      chatData.obraSocial = 'Particular';
+      step = 4;
+      setProgress(flow[4].progress);
+      await addMsg(flow[4].msg, 'bot');
+      showOpts(flow[4].opts);
+    }
+
+  } else if (step === 3) {
+    chatData.obraSocial = val;
+    step = 4;
+    setProgress(flow[4].progress);
+    await showTyping(600);
+    await addMsg(flow[4].msg, 'bot');
+    showOpts(flow[4].opts);
+
+  } else if (step === 4) {
+    chatData.dia = val;
+    step = 5;
+    setProgress(flow[5].progress);
+    await showTyping(600);
+    await addMsg(flow[5].msg, 'bot');
+    showOpts(flow[5].opts);
+
+  } else if (step === 5) {
+    chatData.horario = val;
+    step = 6;
+    setProgress(100);
+    await showTyping(900);
+
+    const resumen = `¡Listo! 🎉 Tenemos todo lo que necesitamos:\n\n👩‍⚕️ Profesional: ${chatData.profesional}\n🩺 Tratamiento: ${chatData.tratamiento}\n💳 Cobertura: ${chatData.obraSocial || 'Particular'}\n📅 Día: ${chatData.dia}\n🕐 Horario: ${chatData.horario}\n\nPresioná el botón para confirmar tu turno por WhatsApp. ¡Te esperamos!`;
+    await addMsg(resumen, 'bot');
+
+    const phone = chatData.profesional.includes('Romina') ? '543624543425' :
+                  chatData.profesional.includes('Tamy') ? '543624123456' : '543624543425';
+    const waMsg = encodeURIComponent(
+      `Hola! Quisiera agendar un turno.\n` +
+      `• Profesional: ${chatData.profesional}\n` +
+      `• Tratamiento: ${chatData.tratamiento}\n` +
+      `• Cobertura: ${chatData.obraSocial || 'Particular'}\n` +
+      `• Día preferido: ${chatData.dia}\n` +
+      `• Horario preferido: ${chatData.horario}\n` +
+      `Quedo a la espera, ¡gracias! 😊`
+    );
+
+    setTimeout(() => {
+      const opts = document.getElementById('cbOpts');
+      opts.innerHTML = `
+        <a href="https://wa.me/${phone}?text=${waMsg}" target="_blank" 
+           class="cb-opt" 
+           style="text-decoration:none;background:#25D366;color:white;border-color:#25D366;font-weight:700;padding:9px 18px;">
+          ✅ Confirmar Turno por WhatsApp
+        </a>
+        <button class="cb-opt" onclick="resetChat()" style="font-size:11px">🔄 Empezar de nuevo</button>
+      `;
+    }, 400);
+  }
+}
+
+function resetChat() {
+  step = 0;
+  chatData = {};
+  document.getElementById('cbMsgs').innerHTML = '';
+  document.getElementById('cbOpts').innerHTML = '';
+  setProgress(0);
+  setTimeout(startChat, 300);
+}
+
+async function startChat() {
+  setProgress(flow[0].progress);
+  await showTyping(600);
+  await addMsg(flow[0].msg, 'bot');
+  showOpts(flow[0].opts);
+}
+
+function toggleChat() {
+  const w = document.getElementById('cbWindow');
+  chatOpen = !chatOpen;
+  w.classList.toggle('open', chatOpen);
+  const btn = document.getElementById('cbBtn');
+
+  if (chatOpen) {
+    btn.innerHTML = `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+    if (step === 0 && document.getElementById('cbMsgs').children.length === 0) {
+      startChat();
+    }
+  } else {
+    btn.innerHTML = `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`;
+  }
+}
+
+function sendManual() {
+  const inp = document.getElementById('cbInp');
+  const val = inp.value.trim();
+  if (!val) return;
+  inp.value = '';
+
+  // Si es respuesta sobre obra social libre
+  if (step === 3) {
+    handleOpt(val);
+  } else {
+    addMsg(val, 'user');
+    setTimeout(() => {
+      addMsg('Por favor usá los botones para que pueda procesarlo correctamente. 😊', 'bot');
+    }, 400);
+  }
+}
+</script>
+</body>
+</html>
